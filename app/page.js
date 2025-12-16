@@ -1,6 +1,7 @@
 import Heading from "../components/ui/typography/heading";
 import ProductCard from "../components/product-card/productCard";
 
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Product Listing Page",
   description: "PLP built using Next.js with SSR",
@@ -8,9 +9,15 @@ export const metadata = {
 
 export default async function Page() {
   const res = await fetch("https://fakestoreapi.com/products", {
-  next: { revalidate: 60 },
-});
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch products");
+  }
+
   const products = await res.json();
+
 
   return (
     <main>
