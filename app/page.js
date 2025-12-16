@@ -1,32 +1,38 @@
-import Heading from "../components/ui/typography/heading";
-import ProductCard from "../components/product-card/productCard";
-
 export const dynamic = "force-dynamic";
-export const metadata = {
-  title: "Product Listing Page",
-  description: "PLP built using Next.js with SSR",
-};
 
 export default async function Page() {
-  const res = await fetch("https://fakestoreapi.com/products", {
-    next: { revalidate: 60 },
-  });
+  let products = [];
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch products");
+  try {
+    const res = await fetch("https://fakestoreapi.com/products", {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("API response not OK");
+    }
+
+    products = await res.json();
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
   }
-
-  const products = await res.json();
-
 
   return (
     <main>
-      <Heading text="DISCOVER OUR PRODUCTS" />
-      <div className="grid">
-        {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
-        ))}
-      </div>
+      <h1>DISCOVER THE PRODUCTS</h1>
+
+      {products.length === 0 ? (
+        <p>Unable to load products.</p>
+      ) : (
+        <div className="grid">
+          {products.map((product) => (
+            <div key={product.id}>
+              <h2>{product.title}</h2>
+              <p>{product.price}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </main>
   );
 }
