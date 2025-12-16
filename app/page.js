@@ -8,8 +8,8 @@ export const metadata = {
 
 export default async function Page() {
   const res = await fetch("https://fakestoreapi.com/products", {
-    cache: "no-store",
-  });
+  next: { revalidate: 60 },
+});
   const products = await res.json();
 
   return (
