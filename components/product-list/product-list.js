@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import ProductCard from "../product-card/ProductCard";
+import ProductCard from "../product-card/productCard";
 
 export default async function ProductList() {
   let products = [];
