@@ -4,17 +4,15 @@ export default async function Page() {
   let products = [];
 
   try {
-    const res = await fetch("https://fakestoreapi.com/products", {
+    const res = await fetch("http://localhost/api/products", {
       cache: "no-store",
     });
 
-    if (!res.ok) {
-      throw new Error("API response not OK");
-    }
+    if (!res.ok) throw new Error("API failed");
 
     products = await res.json();
-  } catch (error) {
-    console.error("Failed to fetch products:", error);
+  } catch (err) {
+    console.error(err);
   }
 
   return (
@@ -24,11 +22,11 @@ export default async function Page() {
       {products.length === 0 ? (
         <p>Unable to load products.</p>
       ) : (
-        <div className="grid">
-          {products.map((product) => (
-            <div key={product.id}>
-              <h2>{product.title}</h2>
-              <p>{product.price}</p>
+        <div>
+          {products.map((p) => (
+            <div key={p.id}>
+              <h2>{p.title}</h2>
+              <p>{p.price}</p>
             </div>
           ))}
         </div>
