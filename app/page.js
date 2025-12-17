@@ -3,7 +3,14 @@ import ProductCard from "../components/product-card/productCard";
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  let products = [];
+  let products = [
+    {
+      id: 1,
+      title: "Sample Product",
+      price: 99.99,
+      image: "https://via.placeholder.com/150",
+    },
+  ];
 
   try {
     const baseUrl =
@@ -15,11 +22,9 @@ export default async function Page() {
       cache: "no-store",
     });
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch products");
+    if (res.ok) {
+      products = await res.json();
     }
-
-    products = await res.json();
   } catch (error) {
     console.error("SSR fetch error:", error);
   }
