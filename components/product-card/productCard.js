@@ -4,8 +4,6 @@ import Card from "../ui/card/card";
 import Button from "../ui/buttons/button";
 
 /**
- * ProductCard Component
- * Renders individual product details in a reusable card layout.
  *
  * @param {Object} product - Product data
  * @param {number} product.id - Product ID

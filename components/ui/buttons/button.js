@@ -1,20 +1,25 @@
-
+"use client";
 
 import PropTypes from "prop-types";
 
-export default function Button({ label }) {
+export default function Button({ label, onClick }) {
   return (
-    <button type="button" aria-label={label}>
+    <button
+      type="button"
+      className="btn"
+      onClick={onClick}
+      aria-label={label}
+    >
       {label}
     </button>
   );
 }
 
-  /**
- * Button component
- * @param {string} label - Button text
- */
-
 Button.propTypes = {
   label: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+};
+
+Button.defaultProps = {
+  onClick: () => {},
 };

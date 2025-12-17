@@ -1,36 +1,24 @@
-"use client";
+export const dynamic = "force-dynamic";
 
-import { useEffect, useState } from "react";
-import ProductCard from "../product-card/productCard";
+import ProductCard from "../product-card/ProductCard";
 
-export default function ProductList() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+export default async function ProductList() {
+  let products = [];
 
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await fetch("https://fakestoreapi.com/products");
+  try {
+    const res = await fetch("https://fakestoreapi.com/products", {
+      cache: "no-store",
+    });
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch products");
-        }
-
-        const data = await res.json();
-        setProducts(data);
-      } catch (err) {
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
+    if (!res.ok) {
+      throw new Error("Failed to fetch products");
     }
 
-    fetchProducts();
-  }, []);
-
-  if (loading) return <p>Loading products...</p>;
-  if (error) return <p>Unable to load products.</p>;
+    products = await res.json();
+  } catch (error) {
+    console.error("SSR product fetch failed:", error);
+    return <p>Unable to load products.</p>;
+  }
 
   return (
     <section className="grid">
