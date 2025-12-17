@@ -1,30 +1,35 @@
 import ProductCard from "../components/product-card/productCard";
 
-const products = [
-  {
-    id: 1,
-    title: "Product One",
-    price: 99,
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    id: 2,
-    title: "Product Two",
-    price: 199,
-    image: "https://via.placeholder.com/150",
-  },
-];
+export default async function Page() {
+  let products = [];
 
-export default function Page() {
+  try {
+    const res = await fetch("https://fakestoreapi.com/products", {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch products");
+    }
+
+    products = await res.json();
+  } catch (error) {
+    console.error("SSR fetch error:", error);
+  }
+
   return (
     <main>
       <h1>DISCOVER THE PRODUCTS</h1>
 
-      <div>
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {products.length === 0 ? (
+        <p>Unable to load products.</p>
+      ) : (
+        <div>
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
     </main>
   );
 }
