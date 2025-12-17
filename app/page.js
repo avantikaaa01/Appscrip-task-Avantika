@@ -14,21 +14,23 @@ export default async function Page() {
 
     products = await res.json();
   } catch (error) {
-    console.error("SSR fetch error:", error);
+    console.error("Product fetch failed:",error);
   }
 
   return (
     <main>
-      <h1>DISCOVER THE PRODUCTS</h1>
+      <header>
+        <h1 className="heading">DISCOVER THE PRODUCTS</h1>
+      </header>
 
       {products.length === 0 ? (
         <p>Unable to load products.</p>
       ) : (
-        <div>
+        <section className="grid">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
-        </div>
+        </section>
       )}
     </main>
   );
