@@ -1,42 +1,30 @@
 import ProductCard from "../components/product-card/productCard";
 
-export const dynamic = "force-dynamic";
+const products = [
+  {
+    id: 1,
+    title: "Product One",
+    price: 99,
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: 2,
+    title: "Product Two",
+    price: 199,
+    image: "https://via.placeholder.com/150",
+  },
+];
 
-export default async function Page() {
-  let products = [];
-
-  try {
-    const baseUrl =
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:3000"
-        : process.env.NEXT_PUBLIC_SITE_URL;
-
-    const res = await fetch(`${baseUrl}/api/products`, {
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch products");
-    }
-
-    products = await res.json();
-  } catch (error) {
-    console.error("SSR fetch error:", error);
-  }
-
+export default function Page() {
   return (
     <main>
       <h1>DISCOVER THE PRODUCTS</h1>
 
-      {products.length === 0 ? (
-        <p>Unable to load products from API.</p>
-      ) : (
-        <div>
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      )}
+      <div>
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
     </main>
   );
 }
